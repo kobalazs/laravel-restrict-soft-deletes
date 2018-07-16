@@ -54,7 +54,7 @@ trait RestrictSoftDeletes
                 $message  = "This $modelName can not be deleted, because it has existing ";
                 $message .= implode(' and ', $restrictions);
                 $message .= " connected to it. Please delete the connecting entities first!";
-                throw new \Exception($message);
+                throw new DeleteRestrictionException($message);
             }
         });
     }
