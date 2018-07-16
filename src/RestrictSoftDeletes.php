@@ -49,7 +49,7 @@ trait RestrictSoftDeletes
             }
 
             if ($restrictions) {
-                $modelName = array_pop(explode('\\', \class_name($model)));
+                $modelName = array_pop(explode('\\', get_class($model)));
                 $message  = "This $modelName can not be deleted, because it has existing ";
                 $message .= implode(' and ', $restrictions);
                 $message .= " connected to it. Please delete the connecting entities first!";
