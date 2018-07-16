@@ -36,13 +36,13 @@ trait RestrictSoftDeletes
             $restrictions = [];
             foreach ($model->getActiveRestrictedDeletes() as $relationship) {
                 if ($model->{$relationship} instanceof Model) {
-                    if (!$model->{$relationship}->isSoftDeleted()) {
+                    if (!self::isSoftDeleted($model->{$relationship})) {
                         $restrictions[] = $relationship;
                     }
                     continue;
                 }
                 foreach ($model->{$relationship} as $child) {
-                    if (!$child->isSoftDeleted()) {
+                    if (!self::isSoftDeleted($child)) {
                         $restrictions[] = $relationship;
                     }
                 }
@@ -58,7 +58,7 @@ trait RestrictSoftDeletes
         });
     }
 
-    protected function isSoftDeleted(Model $model)
+    protected static function isSoftDeleted(Model $model)
     {
         return method_exists($model, 'runSoftDelete') && $model->trashed();
     }
@@ -97,7 +97,7 @@ trait RestrictSoftDeletes
     {
         return isset($this->restrictDeletes) ? (array) $this->restrictDeletes : [];
     }
-    
+
     /**
      * For the cascading deletes defined on the model, return only those that are not null.
      *
