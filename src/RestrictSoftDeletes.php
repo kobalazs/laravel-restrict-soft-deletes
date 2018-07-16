@@ -37,13 +37,13 @@ trait RestrictSoftDeletes
             foreach ($model->getActiveRestrictedDeletes() as $relationship) {
                 if ($model->{$relationship} instanceof Model) {
                     if (!self::isSoftDeleted($model->{$relationship})) {
-                        $restrictions[] = $relationship;
+                        $restrictions[$relationship] = $relationship;
                     }
                     continue;
                 }
                 foreach ($model->{$relationship} as $child) {
                     if (!self::isSoftDeleted($child)) {
-                        $restrictions[] = $relationship;
+                        $restrictions[$relationship] = $relationship;
                     }
                 }
             }
