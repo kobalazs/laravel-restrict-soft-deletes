@@ -26,6 +26,7 @@ class User extends Model
     protected $restrictDeletes = ['posts'];
 
     ...
-}```
+}
+```
 
 In this example a User can not be deleted while they have any Post that is not soft-deleted.
