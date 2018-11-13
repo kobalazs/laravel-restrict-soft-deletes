@@ -6,11 +6,13 @@ Run `composer require kobalazs/laravel-restrict-soft-deletes`
 
 # Usage
 1. Use RestrictSoftDeletes in your Model you want to have restricted
-2. Add a protected attibute to your Model class listing the foreign keys to be watched
-3. In case of a restricted deletion the trait will throw a `Netpok\Database\Support\DeleteRestrictionException` (HTTP 403)
+2. Add a protected attibute to your Model class listing the Eloquent relationships to be watched
+3. In case of an attempted deletion on a restricted model the trait will throw a `Netpok\Database\Support\DeleteRestrictionException` (HTTP 403)
 
 # Example
 ```
+namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Netpok\Database\Support\RestrictSoftDeletes;
@@ -21,9 +23,17 @@ class User extends Model
     use RestrictSoftDeletes;
 
     /**
-     * The foreign keys restricted to delete
+     * The relations restricting model deletion
      */
     protected $restrictDeletes = ['posts'];
+
+    /**
+     * Eloquent relationship (has to be defined for RestrictSoftDeletes to work!)
+     */
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
 
     ...
 }
